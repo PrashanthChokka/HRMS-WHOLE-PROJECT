@@ -1,0 +1,188 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+
+            /* animated gradient background */
+            background: linear-gradient(-45deg, #81D4FA, #B3E5FC, #B39DDB, #F8BBD0);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+
+        .main {
+            width: 520px;
+            padding: 30px;
+            border-radius: 25px;
+
+            /* glass effect */
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+
+            box-shadow: 0 0 20px rgba(0,0,0,0.3),
+                        inset 0 0 12px rgba(255,255,255,0.5);
+
+            text-align: center;
+        }
+
+        .header h1 {
+            margin-bottom: 25px;
+            font-size: 32px;
+
+            /* gradient heading */
+            background: linear-gradient(135deg, #0D47A1, #7B1FA2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        table {
+            margin: auto;
+            border-spacing: 12px;
+        }
+
+        td {
+            font-weight: bold;
+            color: #0D47A1;
+        }
+
+        input, select {
+            width: 260px;
+            padding: 8px;
+            border-radius: 20px;
+            border: 1px solid #999;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: #7B1FA2;
+            box-shadow: 0 0 6px #7B1FA2;
+        }
+
+        button {
+            margin-top: 15px;
+            width: 160px;
+            height: 45px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, #43E97B, #38F9D7);
+            color: #0B3D2E;
+        }
+
+        .btn-register:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #38F9D7;
+        }
+
+        .btn-login {
+            margin-top: 10px;
+            background: linear-gradient(135deg, #4FACFE, #8F00FF);
+            color: white;
+        }
+
+        .btn-login:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #8F00FF;
+        }
+
+        .login-text {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #0D47A1;
+        }
+
+        .login-text a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #7B1FA2;
+        }
+
+        .login-text a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="main">
+    <div class="header">
+        <h1>REGISTRATION</h1>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+       <table>
+    <tr>
+        <td>First Name:</td>
+        <td><input type="text" name="first_name"></td>
+    </tr>
+
+    <tr>
+        <td>Last Name:</td>
+        <td><input type="text" name="last_name"></td>
+    </tr>
+
+    <tr>
+        <td>Email:</td>
+        <td><input type="text" name="email"></td>
+    </tr>
+
+    <tr>
+        <td>Password:</td>
+        <td><input type="password" name="password"></td>
+    </tr>
+
+    <tr>
+        <td>Mobile:</td>
+        <td><input type="text" name="mobile"></td>
+    </tr>
+
+    <tr>
+        <td>Gender:</td>
+        <td>
+            <select name="gender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+        </td>
+    </tr>
+</table>
+
+
+        <button type="submit" class="btn-register">Register</button>
+
+        <p class="login-text">
+            Already registered?
+        </p>
+
+        <a href="{% url 'login' %}">
+            <button type="button" class="btn-login">Login</button>
+        </a>
+    </form>
+</div>
+
+</body>
+</html>
