@@ -1,64 +1,103 @@
 /* Reset */
-.attendance-page * {
-  margin: 0;
-  padding: 0;
+.attendance-page *{
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
 
-/* Full Background Cover */
-.attendance-page {
-  background: linear-gradient(180deg, orange, yellow);
-  min-height: calc(100vh - 60px);
-
-  width: 100vw; /* 🔥 full screen width */
-  margin-left: -200px; /* 🔥 sidebar width compensate */
+/* Page Background */
+.attendance-page{
+background:linear-gradient(180deg,#f4f6f9,#e9edf3);
+min-height:calc(100vh - 60px);
+padding:40px;
 }
+
 
 /* Attendance Header */
-.attendance-page .attendance-header {
-  background-color: #75ba75;
-  text-align: center;
-  padding: 15px;
-  width: 100%;
+.attendance-header{
+background:#3f8efc;
+color:white;
+text-align:center;
+
+padding:6px;
+font-size:18px;
+font-weight:600;
+
+border-radius:8px;
+width:100%;
 }
 
-.attendance-page .attendance-header h1 {
-  font-size: 22px;
+
+/* Main Card */
+.attendance-main{
+
+margin:60px auto;
+
+background:white;
+padding:50px;
+
+border-radius:12px;
+
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
+
+width:600px;
+
+text-align:center;
+
+display:flex;
+flex-direction:column;
+gap:25px;
 }
 
-/* Content Area */
-.attendance-page .attendance-main {
-  padding: 60px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  column-gap: 50px;
-  row-gap: 80px;
-  text-align: center;
 
-  width: 100%;
-  max-width: 900px; /* 🔥 same centered look */
-  margin: 0 auto; /* 🔥 center grid */
+/* Punch details row */
+.attendance-info{
+display:flex;
+justify-content:space-between;
 }
+
+
+/* Working hours */
+.attendance-hours{
+font-weight:600;
+}
+
+
+/* Buttons row */
+.attendance-buttons{
+display:flex;
+justify-content:center;
+gap:40px;
+margin-top:10px;
+}
+
 
 /* Buttons */
-.attendance-page .attendance-main a {
-  padding: 10px;
-  text-decoration: none;
-  display: block;
+.attendance-buttons button{
 
-  border-bottom: 2px solid lightsalmon;
-  border-radius: 10px;
-  font-size: 30px;
+padding:10px 25px;
 
-  background-color: #f0f0f0;
-  color: #444;
+border:none;
+border-radius:6px;
 
-  transition: 0.3s;
+font-size:15px;
+cursor:pointer;
+
+background:#4CAF50;
+color:white;
+
+transition:0.3s;
 }
 
+
+/* Punch Out button */
+.attendance-buttons form:last-child button{
+background:#ff5252;
+}
+
+
 /* Hover */
-.attendance-page .attendance-main a:hover {
-  background-color: rgb(222, 147, 151);
-  color: white;
-  transform: scale(1.05);
+.attendance-buttons button:hover{
+transform:scale(1.05);
 }

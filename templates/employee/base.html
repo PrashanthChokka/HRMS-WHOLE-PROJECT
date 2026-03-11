@@ -10,9 +10,9 @@
 <link rel="stylesheet" href="{% static 'stylesheets/add_edit_employee.css' %}">
 <link rel="stylesheet" href="{% static 'stylesheets/employee_profile.css' %}">
 
-
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"/>
+
 <style>
 
 *{
@@ -22,20 +22,18 @@ box-sizing:border-box;
 font-family:Segoe UI, sans-serif;
 }
 
-/* ===== HEADER ===== */
+/* HEADER */
 .header{
-position:fixed;
-width:100%;
 height:60px;
-background:#be95be;
+background:#2c3e50;
 display:flex;
 align-items:center;
 justify-content:center;
 color:white;
-z-index:999;
+font-size: 24px;
 }
 
-/* ===== SIDEBAR ===== */
+/* SIDEBAR */
 .sidebar{
 width:220px;
 background:#f4f4f4;
@@ -59,16 +57,10 @@ color:#333;
 text-decoration:none;
 border-radius:8px;
 transition:0.3s;
-position:relative;
 }
 
 .sidebar a:hover{
-background:#790808;
-color:white;
-}
-
-.sidebar a.active{
-background:#790808;
+background:#3f8efc;
 color:white;
 }
 
@@ -76,16 +68,12 @@ color:white;
 margin-right:10px;
 }
 
-/* ===== MAIN ===== */
+/* MAIN */
 .main{
 margin-left:220px;
-margin-top:60px;
 min-height:calc(100vh - 60px);
-padding-top:60px;   /* ADD THIS */
-
+padding:20px;
 }
-
-/* ===== PRO DROPDOWN ===== */
 
 .emp-dropdown{
 max-height:0;
@@ -104,16 +92,8 @@ font-size:14px;
 margin-bottom:6px;
 padding:10px;
 border-radius:6px;
-transition:0.3s;
 }
 
-.emp-dropdown a:hover{
-background:#be95be;
-color:white;
-transform:translateX(5px);
-}
-
-/* ===== ARROW ROTATION ===== */
 .rotate{
 transition:0.3s;
 }
@@ -128,16 +108,17 @@ transform:rotate(180deg);
 <body>
 
 <div class="header">
-<h2>silicon access</h2>
+<h2>SILICON ACCESS</h2>
 </div>
 
 <div class="sidebar">
 
 <h2>HRMS</h2>
 
-<a href="#"><i class="fas fa-home"></i>Dashboard</a>
+<a href="{% url 'base' %}">
+<i class="fas fa-home"></i>Dashboard
+</a>
 
-<!-- EMPLOYEE DROPDOWN -->
 <a href="/e/employee/" id="empToggle">
 <i class="fas fa-user"></i>Employees
 <i class="fas fa-chevron-down rotate" id="arrowIcon" style="float:right;"></i>
@@ -146,68 +127,35 @@ transform:rotate(180deg);
 <div class="emp-dropdown" id="empDropdown">
 <a href="{% url 'employee_list' %}">Employee info</a>
 <a href="/e/add_edit_employee/">Add/Edit Employee</a>
-<a href="#">Employee Profile</a>
 </div>
 
-<a href="/a/attendance/"><i class="fas fa-calendar-check"></i>Attendance</a>
+<a href="{% url 'attendance' %}">
+<i class="fas fa-calendar-check"></i>Attendance
+</a>
+
 <a href="#"><i class="fas fa-leaf"></i>Leaves</a>
 <a href="#"><i class="fas fa-money-bill-wave"></i>Payroll</a>
 <a href="#"><i class="fas fa-chart-line"></i>Reports</a>
 <a href="#"><i class="fas fa-cog"></i>Settings</a>
-<a href="#"><i class="fas fa-sign-out-alt"></i>Logout</a>
+
+<a href="{% url 'logout' %}">
+<i class="fas fa-sign-out-alt"></i>Logout
+</a>
 
 </div>
 
 <div class="main">
+
+{% block content %}
+
 <h2>Dashboard</h2>
 <p>Main content goes here</p>
+
+{% endblock %}
+
 </div>
+
 <script>
-
-const links = document.querySelectorAll(".sidebar a");
-
-function loadPage(page) {
-  fetch(page)
-    .then((response) => response.text())
-    .then((data) => {
-      document.querySelector(".main").innerHTML = data;
-    });
-}
-
-/* ===== SIDEBAR AJAX LOAD ===== */
-
-links[1].onclick = function (event) {
-  event.preventDefault();
-  loadPage("/e/employee/");
-};
-
-links[2].onclick = function (event){
-  event.preventDefault();
-  loadPage("/e/employee_list/");
-}
-
-links[3].onclick = function (event){
-  event.preventDefault();
-  loadPage("/e/add_edit_employee/");
-}
-
-links[4].onclick = function (event){
-  event.preventDefault();
-  loadPage("/e/employee_profile/");
-}
-
-links[5].onclick = function (event) {
-  event.preventDefault();
-  loadPage("/a/attendance/");
-};
-
-links[6].onclick = function (event) {
-  event.preventDefault();
-  loadPage("leaves.html");
-};
-
-
-/* ===== EMPLOYEE DROPDOWN TOGGLE ===== */
 
 const empToggle = document.getElementById("empToggle");
 const empDropdown = document.getElementById("empDropdown");
@@ -219,31 +167,7 @@ empToggle.addEventListener("click", function(e){
   arrowIcon.classList.toggle("open");
 });
 
-
-/* ===== EMPLOYEE NAME CLICK SAME PAGE LOAD (FIXED VERSION) ===== */
-
-document.addEventListener("click", function(e){
-
-  const link = e.target.closest(".emp-name");
-
-  if(link){
-      e.preventDefault();
-
-      const id = link.getAttribute("data-id");
-
-      if(id){
-          fetch(`/e/employee_list/?id=${id}`)
-          .then(res => res.text())
-          .then(html=>{
-              document.querySelector(".main").innerHTML = html;
-          });
-      }
-  }
-
-});
-
 </script>
-
 
 </body>
 </html>

@@ -1,12 +1,110 @@
+{% extends "employee/base.html" %}
+
+{% block content %}
+
 <div class="attendance-page">
-  <div class="attendance-header">
+
+```
+<div class="attendance-header">
     <h1>Attendance overview</h1>
-  </div>
-  <div class="attendance-main">
-
-    <a href="#">Punch In </a>
-
-    <a href="#">Punch Out </a>
-    <a href="#">calendar </a>
-  </div>
 </div>
+
+<!-- Live Working Hours -->
+<div style="position:absolute; right:40px; top:120px; font-weight:bold;">
+    ⏱ Live Working Time :
+    <span id="liveTimer">0h 0m</span>
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+    <p style="color:red;font-weight:bold;text-align:center;margin-top:15px;">
+        {{ message }}
+    </p>
+    {% endfor %}
+{% endif %}
+
+<div class="attendance-main">
+
+    <!-- Punch In / Punch Out Row -->
+    <div class="attendance-info">
+
+        <p>
+            <strong>Punch In :</strong>
+            {% if attendance and attendance.punch_in %}
+                {{ attendance.punch_in|time:"h:i A" }}
+            {% else %}
+                Not punched in
+            {% endif %}
+        </p>
+
+        <p>
+            <strong>Punch Out :</strong>
+            {% if attendance and attendance.punch_out %}
+                {{ attendance.punch_out|time:"h:i A" }}
+            {% else %}
+                Not punched out
+            {% endif %}
+        </p>
+
+    </div>
+
+    <!-- Working Hours -->
+    <p class="attendance-hours">
+
+        <strong>Working Hours :</strong>
+
+        {% if attendance and attendance.work_duration %}
+            {{ work_hours }}
+        {% else %}
+            0h 0m
+        {% endif %}
+
+    </p>
+
+    <!-- Buttons Row -->
+    <div class="attendance-buttons">
+
+        <form action="{% url 'punch_in' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">Punch In</button>
+        </form>
+
+        <form action="{% url 'punch_out' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">Punch Out</button>
+        </form>
+
+        <a href="{% url 'attendance_calendar' %}">
+            <button type="button">View Attendance Calendar</button>
+        </a>
+
+        {% if attendance and attendance.punch_in %}
+            <span id="punchInTime"
+                  data-time="{{ attendance.punch_in|date:'c' }}"
+                  style="display:none;">
+            </span>
+        {% endif %}
+
+    </div>
+
+</div>
+```
+
+</div>
+
+<script>
+
+const punchElement = document.getElementById("punchInTime");
+
+if (punchElement) {
+
+    const punchTime = new Date(punchElement.dataset.time);
+
+    setInterval(function(){
+
+        const now = new Date();
+        const diff = now - punchTime;
+
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) /
+{% endblock %}

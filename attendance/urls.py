@@ -1,7 +1,9 @@
 from django.urls import path
-from attendance.views import attendance_details
+from .views import attendance_details, punch_in, punch_out, attendance_calendar
 
 urlpatterns = [
-
-    path('attendance/',attendance_details),
+    path('', attendance_details, name='attendance'),
+    path('punch-in/', punch_in, name='punch_in'),
+    path('punch-out/', punch_out, name='punch_out'),
+    path('calendar/', attendance_calendar, name='attendance_calendar'),
 ]

@@ -1,0 +1,78 @@
+{% extends "employee/base.html" %}
+
+{% block content %}
+<style>
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+th{
+background:#3f8efc;
+color:white;
+padding:10px;
+}
+
+td{
+padding:10px;
+border:1px solid #ddd;
+text-align:center;
+}
+
+tr:nth-child(even){
+background:#f5f5f5;
+}
+
+</style>
+
+<h2>Attendance Records for {{ request.user.first_name }}</h2>
+<a href="{% url 'attendance' %}">
+<button style="margin-bottom:15px;">Back to Attendance</button>
+</a>
+
+<table border="1" style="width:100%;text-align:center;margin-top:20px;">
+
+<tr>
+<th>Date</th>
+<th>Punch In</th>
+<th>Punch Out</th>
+<th>Status</th>
+<th>Working Hours</th>
+</tr>
+
+{% for record in records %}
+
+<tr>
+<td>{{ record.date|date:"M d, Y" }}</td>
+<td>{{ record.punch_in|time:"h:i A" }}</td>
+<td>{{ record.punch_out|time:"h:i A" }}</td>
+<td>
+
+{% if record.status == "Present" %}
+<span style="color:green;font-weight:bold;">Present</span>
+
+{% elif record.status == "Half Day" %}
+<span style="color:orange;font-weight:bold;">Half Day</span>
+
+{% else %}
+<span style="color:red;font-weight:bold;">Absent</span>
+
+{% endif %}
+
+</td>
+<td>{{ record.formatted_hours }}</td>
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="5">No attendance records found</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}
