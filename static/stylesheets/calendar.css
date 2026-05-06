@@ -1,0 +1,217 @@
+/* ===== PAGE BACKGROUND ===== */
+ 
+.calendar-page{
+
+background:#f1f5f9;
+
+padding:20px;
+
+min-height:calc(100vh - 60px);
+
+}
+ 
+ 
+/* ===== CARD CONTAINER ===== */
+ 
+.calendar-card{
+
+background:white;
+
+border-radius:12px;
+
+padding:25px;
+
+max-width:1100px;
+
+margin-left:4px;
+
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+
+}
+ 
+ 
+/* ===== HEADER ===== */
+ 
+.calendar-header{
+
+margin-bottom:15px;
+
+}
+ 
+.calendar-header h2{
+
+font-size:22px;
+
+font-weight:600;
+
+color:#1e3a8a;
+
+}
+ 
+ 
+/* ===== TOOLBAR ===== */
+ 
+.fc-toolbar{
+
+margin-bottom:20px;
+
+padding:12px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+}
+ 
+ 
+/* ===== LEFT ARROWS ===== */
+ 
+.fc-toolbar-chunk:first-child{
+
+display:flex;
+
+gap:18px;
+
+}
+ 
+ 
+/* ===== MONTH TITLE ===== */
+ 
+.fc-toolbar-title{
+
+font-size:24px;
+
+font-weight:600;
+
+color:#1e3a8a;
+
+margin-left:60px;
+
+margin-right:60px;
+
+}
+ 
+ 
+/* ===== RIGHT BUTTON GROUP ===== */
+ 
+.fc-toolbar-chunk:last-child{
+
+display:flex;
+
+gap:12px;
+
+}
+ 
+ 
+/* ===== CALENDAR BUTTONS ===== */
+ 
+.fc-button{
+
+background:#1e3a8a !important;
+
+border:none !important;
+
+border-radius:6px !important;
+
+padding:7px 16px !important;
+
+font-size:13px !important;
+
+}
+ 
+ 
+/* ===== BUTTON HOVER ===== */
+ 
+.fc-button:hover{
+
+background:#2563eb !important;
+
+}
+ 
+ 
+/* ===== TODAY BUTTON ===== */
+ 
+.fc-today-button{
+
+background:#64748b !important;
+
+}
+ 
+ 
+/* ===== CALENDAR GRID ===== */
+ 
+#calendar{
+
+background:white;
+
+border-radius:10px;
+
+padding:10px;
+
+}
+ 
+ 
+/* ===== WEEK HEADER ===== */
+ 
+.fc-col-header-cell{
+
+background:#f8fafc;
+
+font-weight:600;
+
+color:#334155;
+
+padding:10px;
+
+}
+ 
+ 
+/* ===== DAY CELL ===== */
+ 
+.fc-daygrid-day{
+
+padding:10px;
+
+}
+ 
+ 
+/* ===== DAY HOVER ===== */
+ 
+.fc-daygrid-day:hover{
+
+background:#f1f5f9;
+
+cursor:pointer;
+
+}
+ 
+ 
+/* ===== TODAY COLOR ===== */
+ 
+.fc-day-today{
+
+background:#fff9c4 !important;
+
+}
+ 
+ 
+/* ===== GRID BORDER ===== */
+ 
+.fc-theme-standard td,
+
+.fc-theme-standard th{
+
+border:1px solid #e5e7eb;
+
+}
+/* Attendance event text */
+
+.fc-event{
+font-size:11px;
+white-space:pre-line;
+padding:3px;
+}
+
+ 

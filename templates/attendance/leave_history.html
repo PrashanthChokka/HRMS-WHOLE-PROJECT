@@ -1,0 +1,120 @@
+{% extends "employee/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'stylesheets/attendance.css' %}">
+
+<div class="attendance-page" style="background: linear-gradient(135deg, #e6dff5, #cdb4db)">
+
+    <!-- HEADER -->
+    <div class="attendance-header" style="background: linear-gradient(135deg, #7b6fc2, #b8a1e3)">
+        <h1>My Leaves</h1>
+    </div>
+
+    <!-- ✅ FILTERED MESSAGES (FINAL FIX) -->
+    {% if messages %}
+        {% for message in messages %}
+            {% if 'leave' in message.tags %}
+                <div style="
+                    text-align:center;
+                    margin-bottom:15px;
+                    padding:10px;
+                    border-radius:8px;
+                    font-weight:600;
+
+                    {% if 'error' in message.tags %}
+                        background:#fee2e2; color:#991b1b;
+                    {% else %}
+                        background:#dcfce7; color:#166534;
+                    {% endif %}
+                ">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <!-- MAIN CARD -->
+    <div class="attendance-main">
+
+        <table class="leave-table">
+
+            <thead>
+                <tr>
+                    <th>Leave Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Days</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Applied On</th>
+                    <th>Manager Comment</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for leave in leaves %}
+                <tr>
+
+                    <td>{{ leave.leave_type }}</td>
+
+                    <td>{{ leave.start_date|date:"F d, Y" }}</td>
+
+                    <td>{{ leave.end_date|date:"F d, Y" }}</td>
+
+                    <td>{{ leave.days }}</td>
+
+                    <td>{{ leave.reason }}</td>
+
+                    <td>
+                        {% if leave.status == "Approved" %}
+                            <span class="status-approved">Approved</span>
+                        {% elif leave.status == "Rejected" %}
+                            <span class="status-rejected">Rejected</span>
+                        {% elif leave.status == "Cancelled" %}
+                            <span class="status-cancelled">Cancelled</span>
+                        {% else %}
+                            <span class="status-pending">Pending</span>
+                        {% endif %}
+                    </td>
+
+                    <td>{{ leave.applied_on|date:"d M Y" }}</td>
+
+                    <!-- Manager Comment -->
+                    <td>
+                        {% if leave.status == "Rejected" %}
+                            <span style="color:red; font-weight:600;">
+                                {{ leave.manager_comment|default:"No comment" }}
+                            </span>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+
+                    <!-- Action -->
+                    <td>
+                        {% if leave.status == "Pending" %}
+                            <a href="{% url 'cancel_leave' leave.id %}">Cancel</a>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+                <tr>
+                    <td colspan="9" style="text-align:center;">No leave records found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

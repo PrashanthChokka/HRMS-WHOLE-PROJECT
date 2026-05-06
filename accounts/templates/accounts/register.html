@@ -2,187 +2,256 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Registration</title>
+<meta charset="UTF-8">
+<title>Register</title>
 
-    <style>
-        body {
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: Arial, sans-serif;
+<style>
 
-            /* animated gradient background */
-            background: linear-gradient(-45deg, #81D4FA, #B3E5FC, #B39DDB, #F8BBD0);
-            background-size: 400% 400%;
-            animation: gradientBG 10s ease infinite;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        @keyframes gradientBG {
-            0% {background-position: 0% 50%;}
-            50% {background-position: 100% 50%;}
-            100% {background-position: 0% 50%;}
-        }
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', sans-serif;
 
-        .main {
-            width: 520px;
-            padding: 30px;
-            border-radius: 25px;
+    background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+}
 
-            /* glass effect */
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+/* MAIN CARD */
+.container {
+    width: 100%;
+    max-width: 420px;
+    padding: 35px;
+    border-radius: 16px;
 
-            box-shadow: 0 0 20px rgba(0,0,0,0.3),
-                        inset 0 0 12px rgba(255,255,255,0.5);
+    background: white;
+    box-shadow: 0 12px 30px rgba(14, 165, 233, 0.15);
 
-            text-align: center;
-        }
+    animation: fadeIn 0.4s ease;
+}
 
-        .header h1 {
-            margin-bottom: 25px;
-            font-size: 32px;
+@keyframes fadeIn {
+    from {opacity:0; transform: translateY(10px);}
+    to {opacity:1; transform: translateY(0);}
+}
 
-            /* gradient heading */
-            background: linear-gradient(135deg, #0D47A1, #7B1FA2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+/* HEADER */
+h1 {
+    text-align: center;
+    margin-bottom: 5px;
+    color: #0284c7;
+    font-size: 26px;
+}
 
-        table {
-            margin: auto;
-            border-spacing: 12px;
-        }
+.subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 25px;
+}
 
-        td {
-            font-weight: bold;
-            color: #0D47A1;
-        }
+/* ALERT */
+.alert {
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    border-left: 4px solid;
+}
 
-        input, select {
-            width: 260px;
-            padding: 8px;
-            border-radius: 20px;
-            border: 1px solid #999;
-            outline: none;
-        }
+.alert.error {
+    background: #fef2f2;
+    color: #ef4444;
+    border-color: #f87171;
+}
 
-        input:focus, select:focus {
-            border-color: #7B1FA2;
-            box-shadow: 0 0 6px #7B1FA2;
-        }
+.alert.success {
+    background: #f0fdf4;
+    color: #22c55e;
+    border-color: #4ade80;
+}
 
-        button {
-            margin-top: 15px;
-            width: 160px;
-            height: 45px;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 18px;
-            transition: 0.3s;
-        }
+/* INPUT GROUP */
+.input-group {
+    margin-bottom: 16px;
+}
 
-        .btn-register {
-            background: linear-gradient(135deg, #43E97B, #38F9D7);
-            color: #0B3D2E;
-        }
+label {
+    display: block;
+    font-size: 13px;
+    color: #475569;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
 
-        .btn-register:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px #38F9D7;
-        }
+/* INPUT WRAPPER (fix alignment issue) */
+.input-wrapper {
+    position: relative;
+}
 
-        .btn-login {
-            margin-top: 10px;
-            background: linear-gradient(135deg, #4FACFE, #8F00FF);
-            color: white;
-        }
+/* INPUT */
+input, select {
+    width: 100%;
+    height: 42px;
+    padding: 10px 40px 10px 12px;
 
-        .btn-login:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px #8F00FF;
-        }
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    outline: none;
 
-        .login-text {
-            margin-top: 20px;
-            font-weight: bold;
-            color: #0D47A1;
-        }
+    font-size: 14px;
+    background: #f8fafc;
+    transition: 0.2s;
+}
 
-        .login-text a {
-            text-decoration: none;
-            font-weight: bold;
-            color: #7B1FA2;
-        }
+/* FIXED ALIGNMENT */
+input:focus, select:focus {
+    border-color: #38bdf8;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+}
 
-        .login-text a:hover {
-            text-decoration: underline;
-        }
-    </style>
+/* ICON */
+.input-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #94a3b8;
+    cursor: pointer;
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+    color: white;
+    transition: 0.25s;
+    margin-top: 10px;
+}
+
+button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(56, 189, 248, 0.35);
+}
+
+/* LINK */
+.login-text {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.login-text a {
+    color: #0284c7;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.login-text a:hover {
+    text-decoration: underline;
+}
+
+</style>
 </head>
 
 <body>
 
-<div class="main">
-    <div class="header">
-        <h1>REGISTRATION</h1>
-    </div>
+<div class="container">
+
+    <h1>Create Account</h1>
+    <p class="subtitle">Fill your details to register</p>
+
+    <!-- MESSAGES -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if 'error' in message.tags %}error{% else %}success{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
 
     <form method="POST">
         {% csrf_token %}
-       <table>
-    <tr>
-        <td>First Name:</td>
-        <td><input type="text" name="first_name"></td>
-    </tr>
 
-    <tr>
-        <td>Last Name:</td>
-        <td><input type="text" name="last_name"></td>
-    </tr>
+        <div class="input-group">
+            <label>First Name</label>
+            <div class="input-wrapper">
+                <input type="text" name="first_name" required>
+            </div>
+        </div>
 
-    <tr>
-        <td>Email:</td>
-        <td><input type="text" name="email"></td>
-    </tr>
+        <div class="input-group">
+            <label>Last Name</label>
+            <div class="input-wrapper">
+                <input type="text" name="last_name" required>
+            </div>
+        </div>
 
-    <tr>
-        <td>Password:</td>
-        <td><input type="password" name="password"></td>
-    </tr>
+        <div class="input-group">
+            <label>Email</label>
+            <div class="input-wrapper">
+                <input type="email" name="email" required>
+                <span class="input-icon">📧</span>
+            </div>
+        </div>
 
-    <tr>
-        <td>Mobile:</td>
-        <td><input type="text" name="mobile"></td>
-    </tr>
+        <div class="input-group">
+            <label>Password</label>
+            <div class="input-wrapper">
+                <input type="password" id="password" name="password" required>
+                <span class="input-icon" onclick="togglePassword()">👁</span>
+            </div>
+        </div>
 
-    <tr>
-        <td>Gender:</td>
-        <td>
-            <select name="gender">
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-            </select>
-        </td>
-    </tr>
-</table>
+        <div class="input-group">
+            <label>Mobile</label>
+            <div class="input-wrapper">
+                <input type="text" name="mobile" required>
+            </div>
+        </div>
 
+        <div class="input-group">
+            <label>Gender</label>
+            <div class="input-wrapper">
+                <select name="gender">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+        </div>
 
-        <button type="submit" class="btn-register">Register</button>
+        <button type="submit">Register</button>
 
         <p class="login-text">
             Already registered?
+            <a href="{% url 'login' %}">Login</a>
         </p>
 
-        <a href="{% url 'login' %}">
-            <button type="button" class="btn-login">Login</button>
-        </a>
     </form>
+
 </div>
+
+<script>
+function togglePassword() {
+    const field = document.getElementById("password");
+    field.type = field.type === "password" ? "text" : "password";
+}
+</script>
 
 </body>
 </html>

@@ -2,107 +2,243 @@
 
 {% block content %}
 
+<style>
+
+/* ================= PAGE ================= */
+
+.attendance-page{
+    padding:40px;
+    background:#f4f7fb;
+    min-height:80vh;
+    position:relative;
+}
+
+
+/* ================= HEADER ================= */
+
+.attendance-header{
+    background:linear-gradient(90deg,#4e8bd6,#6fa8ff);
+    color:white;
+    padding:18px;
+    border-radius:12px;
+    text-align:center;
+    font-size:24px;
+    font-weight:600;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+    margin-bottom:40px;
+}
+
+
+/* ================= LIVE TIMER ================= */
+
+.live-timer{
+    position:absolute;
+    right:60px;
+    top:110px;
+    background:#e9f2ff;
+    color:#2b5876;
+    padding:8px 16px;
+    border-radius:20px;
+    font-weight:500;
+    box-shadow:0 3px 8px rgba(0,0,0,0.1);
+}
+
+
+/* ================= CARD ================= */
+
+.attendance-main{
+    width:520px;
+    margin:auto;
+    background:#ffffff;
+    padding:40px;
+    border-radius:16px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.08);
+
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+    align-items:center;
+}
+
+
+/* ================= TOP ROW ================= */
+
+.attendance-info{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    font-size:16px;
+}
+
+
+/* ================= WORKING HOURS ================= */
+
+.attendance-hours{
+    font-size:20px;
+    font-weight:600;
+    text-align:center;
+}
+
+
+/* ================= BUTTONS ================= */
+
+.attendance-buttons{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+}
+
+
+/* ================= BUTTON STYLE ================= */
+
+.attendance-buttons button{
+    border:none;
+    padding:12px 22px;
+    border-radius:10px;
+    font-size:14px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    color:white;
+    transition:0.3s;
+}
+
+
+/* COLORS */
+.btn-green{
+    background:#4CAF50;
+}
+
+.btn-green:hover{
+    background:#3e9442;
+}
+
+.btn-blue{
+    background:#4e8bd6;
+}
+
+.btn-blue:hover{
+    background:#3f76c1;
+}
+
+
+/* ================= MESSAGE ================= */
+
+.error-msg{
+    color:red;
+    font-weight:600;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+</style>
+
+
+
 <div class="attendance-page">
 
-<div class="attendance-header">
-    <h1>Attendance Overview</h1>
-</div>
-
-<!-- Live Working Hours -->
-<!-- Live Working Hours -->
-{% if attendance and attendance.punch_in %}
-
-<div style="position:absolute; right:40px; top:120px; font-weight:bold;">
-    ⏱ Live Working Time :
-
-    <span id="liveTimer">
-
-        {% if attendance.punch_out %}
-            {{ work_hours }}
-        {% else %}
-            0h 0m
-        {% endif %}
-
-    </span>
-</div>
-
-{% endif %}
-
-{% if messages %}
-    {% for message in messages %}
-    <p style="color:red;font-weight:bold;text-align:center;margin-top:15px;">
-        {{ message }}
-    </p>
-    {% endfor %}
-{% endif %}
-
-<div class="attendance-main">
-
-    <!-- Punch In / Punch Out Row -->
-    <div class="attendance-info">
-
-        <p>
-            <strong>Punch In :</strong>
-            {% if attendance and attendance.punch_in %}
-                {{ attendance.punch_in|time:"h:i A" }}
-            {% else %}
-                Not punched in
-            {% endif %}
-        </p>
-
-        <p>
-            <strong>Punch Out :</strong>
-            {% if attendance and attendance.punch_out %}
-                {{ attendance.punch_out|time:"h:i A" }}
-            {% else %}
-                Not punched out
-            {% endif %}
-        </p>
-
+    <div class="attendance-header">
+        Attendance Overview
     </div>
 
-    <!-- Working Hours -->
-    <p class="attendance-hours">
 
-        <strong>Working Hours :</strong>
+    {% if attendance and attendance.punch_in %}
+    <div class="live-timer">
+        ⏱ Live Working Time :
+        <span id="liveTimer">
+            {% if attendance.punch_out %}
+                {{ work_hours }}
+            {% else %}
+                0h 0m
+            {% endif %}
+        </span>
+    </div>
+    {% endif %}
 
-        {% if attendance and attendance.work_duration %}
-            {{ work_hours }}
-        {% else %}
-            0h 0m
-        {% endif %}
 
-    </p>
+    {% if messages %}
+        {% for message in messages %}
+            <p class="error-msg">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
 
-    <!-- Buttons Row -->
-    <div class="attendance-buttons">
 
-        <form action="{% url 'punch_in' %}" method="POST">
-            {% csrf_token %}
-            <button type="submit">Punch In</button>
-        </form>
 
-        <form action="{% url 'punch_out' %}" method="POST">
-            {% csrf_token %}
-            <button type="submit">Punch Out</button>
-        </form>
+    <div class="attendance-main">
 
-        <a href="{% url 'attendance_calendar' %}">
-            <button type="button">View Attendance Calendar</button>
-        </a>
+        <!-- TOP -->
+        <div class="attendance-info">
+
+            <div>
+                <strong>Punch In :</strong><br>
+                {% if attendance and attendance.punch_in %}
+                    {{ attendance.punch_in|time:"h:i A" }}
+                {% else %}
+                    Not punched in
+                {% endif %}
+            </div>
+
+            <div>
+                <strong>Punch Out :</strong><br>
+                {% if attendance and attendance.punch_out %}
+                    {{ attendance.punch_out|time:"h:i A" }}
+                {% else %}
+                    Not punched out
+                {% endif %}
+            </div>
+
+        </div>
+
+
+        <!-- CENTER -->
+        <div class="attendance-hours">
+            <strong>Working Hours :</strong>
+            {% if attendance and attendance.work_duration %}
+                {{ work_hours }}
+            {% else %}
+                0h 0m
+            {% endif %}
+        </div>
+
+
+        <!-- BUTTONS -->
+        <div class="attendance-buttons">
+
+            <form action="{% url 'punch_in' %}" method="POST">
+                {% csrf_token %}
+                <button class="btn-green">
+                    <i class="fa fa-sign-in-alt"></i> Punch In
+                </button>
+            </form>
+
+            <form action="{% url 'punch_out' %}" method="POST">
+                {% csrf_token %}
+                <button class="btn-green">
+                    <i class="fa fa-sign-out-alt"></i> Punch Out
+                </button>
+            </form>
+
+            <a href="{% url 'attendance_calendar' %}">
+                <button type="button" class="btn-blue">
+                    <i class="fa fa-calendar"></i> Calendar
+                </button>
+            </a>
+
+        </div>
+
 
         {% if attendance and attendance.punch_in %}
-            <span id="punchInTime"
-                  data-time="{{ attendance.punch_in|date:'c' }}"
-                  style="display:none;">
-            </span>
+        <span id="punchInTime"
+              data-time="{{ attendance.punch_in|date:'c' }}"
+              style="display:none;">
+        </span>
         {% endif %}
 
     </div>
 
 </div>
 
-</div>
 
 
 {% if attendance and attendance.punch_in and not attendance.punch_out %}
@@ -110,27 +246,31 @@
 <script>
 
 const punchElement = document.getElementById("punchInTime");
+const timerElement = document.getElementById("liveTimer");
 
-if (punchElement) {
+if (punchElement && timerElement) {
 
     const punchTime = new Date(punchElement.dataset.time);
 
-    setInterval(function(){
+    function updateTimer(){
 
         const now = new Date();
         const diff = now - punchTime;
 
         const hours = Math.floor(diff / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-        document.getElementById("liveTimer").innerText =
-            hours + "h " + minutes + "m";
+        timerElement.innerText =
+            hours + "h " + minutes + "m " + seconds + "s";
+    }
 
-    }, 60000);
-
+    updateTimer();
+    setInterval(updateTimer,1000);
 }
 
 </script>
 
 {% endif %}
+
 {% endblock %}

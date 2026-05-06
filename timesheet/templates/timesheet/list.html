@@ -1,0 +1,100 @@
+{% extends 'employee/base.html' %}
+
+{% block content %}
+
+<div style="max-width:1100px; margin:auto;">
+
+    <!-- Header -->
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h2 style="font-size:24px; font-weight:600;">📋 Timesheets</h2>
+
+        <a href="{% url 'create_timesheet' %}" 
+           style="background:#0ea5e9; color:white; padding:10px 18px; border-radius:8px; text-decoration:none;">
+            + Add Timesheet
+        </a>
+    </div>
+
+    <!-- ✅ FILTERED MESSAGES -->
+    {% if messages %}
+      <div style="margin-bottom:15px;">
+        {% for message in messages %}
+          {% if 'timesheet' in message.tags %}
+            <div style="
+              padding:12px 14px;
+              border-radius:10px;
+              margin-bottom:10px;
+              font-size:14px;
+
+              {% if 'error' in message.tags %}
+                  background:#fee2e2; color:#991b1b;
+              {% else %}
+                  background:#dcfce7; color:#166534;
+              {% endif %}
+            ">
+              {{ message }}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Table -->
+    <div style="background:white; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.08); overflow:hidden;">
+
+        <table style="width:100%; border-collapse: collapse;">
+
+            <thead style="background:#0ea5e9; color:white;">
+                <tr>
+                    <th style="padding:14px;">Employee</th>
+                    <th style="padding:14px;">Date</th>
+                    <th style="padding:14px;">Project</th>
+                    <th style="padding:14px;">Tasks</th>
+                    <th style="padding:14px;">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for t in timesheets %}
+                <tr style="border-bottom:1px solid #e5e7eb; transition:0.2s;"
+                    onmouseover="this.style.background='#f0f9ff'"
+                    onmouseout="this.style.background='white'">
+
+                    <td style="padding:14px;">{{ t.employee_name }}</td>
+                    <td style="padding:14px;">{{ t.date }}</td>
+
+                    <td style="padding:14px;">
+                        <span style="background:#e0f2fe; padding:4px 10px; border-radius:20px;">
+                            {{ t.project }}
+                        </span>
+                    </td>
+
+                    <td style="padding:14px; text-align:center;">
+                        <span style="background:#dcfce7; padding:4px 10px; border-radius:20px;">
+                            {{ t.work_logs.count }}
+                        </span>
+                    </td>
+
+                    <td style="padding:14px; text-align:center;">
+                        <a href="{% url 'timesheet_detail' t.id %}" 
+                           style="background:#22c55e; color:white; padding:6px 12px; border-radius:6px;">
+                            View
+                        </a>
+                    </td>
+
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" style="text-align:center; padding:30px;">
+                        No timesheets available
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -8,6 +8,7 @@ class Registration(models.Model):
     password = models.CharField(max_length=100)
     mobile = models.CharField(max_length=10)
     gender = models.CharField(max_length=10)
+    salary = models.FloatField(default=30000)
 
     def __str__(self):
         return self.email

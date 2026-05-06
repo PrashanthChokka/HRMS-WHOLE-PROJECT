@@ -2,158 +2,231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Login</title>
+<meta charset="UTF-8">
+<title>Login</title>
 
-    <style>
-        body {
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: Arial, sans-serif;
+<style>
 
-            /* animated gradient background */
-            background: linear-gradient(-45deg, #A18CD1, #FBC2EB, #B39DDB, #F8BBD0);
-            background-size: 400% 400%;
-            animation: gradientBG 10s ease infinite;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        @keyframes gradientBG {
-            0% {background-position: 0% 50%;}
-            50% {background-position: 100% 50%;}
-            100% {background-position: 0% 50%;}
-        }
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', sans-serif;
 
-        .login-box {
-            width: 400px;
-            padding: 30px;
-            border-radius: 20px;
+    background: linear-gradient(135deg, #e6f4ff, #f0f9ff);
+}
 
-            /* glassmorphism */
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+/* CARD */
+.login-container {
+    width: 100%;
+    max-width: 360px;
+    padding: 34px 30px;
+    border-radius: 16px;
 
-            box-shadow: 0 0 20px rgba(0,0,0,0.3),
-                        inset 0 0 12px rgba(255,255,255,0.4);
+    background: #ffffff;
+    box-shadow: 0 10px 25px rgba(0, 120, 255, 0.12);
 
-            text-align: center;
-        }
+    animation: fadeIn 0.4s ease;
+}
 
-        .login-box h2 {
-            margin-bottom: 10px;
-            font-size: 28px;
+@keyframes fadeIn {
+    from {opacity:0; transform: translateY(12px);}
+    to {opacity:1; transform: translateY(0);}
+}
 
-            /* gradient text */
-            background: linear-gradient(135deg, #7A2E9B, #FF5F9E);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+/* HEADER */
+h2 {
+    text-align: center;
+    margin: 0;
+    font-size: 24px;
+    color: #0284c7;
+}
 
-        .subtitle {
-            margin-bottom: 20px;
-            color: #4A148C;
-        }
+.subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 6px;
+    margin-bottom: 22px;
+}
 
-        .input-group {
-            text-align: left;
-            margin-bottom: 15px;
-        }
+/* MESSAGE */
+.alert {
+    padding: 10px 12px;
+    border-radius: 10px;
+    margin-bottom: 18px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-left: 4px solid;
+}
 
-        label {
-            font-weight: bold;
-            color: #4A148C;
-        }
+.alert.success {
+    background: #ecfdf5;
+    color: #16a34a;
+    border-color: #22c55e;
+}
 
-        input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 25px;
-            border: 1px solid #aaa;
-            margin-top: 5px;
-            outline: none;
-        }
+.alert.error {
+    background: #fef2f2;
+    color: #dc2626;
+    border-color: #ef4444;
+}
 
-        input:focus {
-            border-color: #7A2E9B;
-            box-shadow: 0 0 5px #7A2E9B;
-        }
+/* INPUT */
+.input-group {
+    margin-bottom: 16px;
+}
 
-        button {
-            margin-top: 15px;
-            width: 160px;
-            height: 45px;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 18px;
+label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #475569;
+    display: block;
+    margin-bottom: 5px;
+}
 
-            background: linear-gradient(135deg, #43E97B, #38F9D7);
-            color: #0B3D2E;
-            transition: 0.3s;
-        }
+.input-wrapper {
+    position: relative;
+}
 
-        button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px #38F9D7;
-        }
+input {
+    width: 100%;
+    height: 40px;
+    padding: 10px 36px 10px 12px;
 
-        .register-link {
-            margin-top: 15px;
-            border-top: 1px solid #aaa;
-            padding-top: 10px;
-            color: #4A148C;
-        }
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
 
-        .register-link a {
-            color: #6A1B9A;
-            text-decoration: none;
-            font-weight: bold;
-        }
+    background: #f8fafc;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s;
+}
 
-        .register-link a:hover {
-            text-decoration: underline;
-        }
-    </style>
+input:focus {
+    border-color: #38bdf8;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+}
+
+/* ICON */
+.icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
+    color: #94a3b8;
+    cursor: pointer;
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    height: 42px;
+    margin-top: 8px;
+
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+
+    font-size: 14.5px;
+    font-weight: 600;
+
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+    color: white;
+
+    transition: 0.25s;
+}
+
+button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(56, 189, 248, 0.35);
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 12.5px;
+    color: #64748b;
+}
+
+.footer a {
+    color: #0284c7;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+</style>
 </head>
 
 <body>
 
-<div class="login-box">
+<div class="login-container">
+
     <h2>Welcome Back</h2>
-    <p class="subtitle">Login to your account</p>
+    <p class="subtitle">Sign in to continue</p>
+
+    <!-- MESSAGES -->
     {% if messages %}
     {% for message in messages %}
-        <p style="color: red; font-weight: bold; margin-bottom: 10px;">
-            {{ message }}
-        </p>
+        {% if 'login' in message.tags %}
+            <div class="alert success">
+                {{ message }}
+            </div>
+        {% endif %}
     {% endfor %}
 {% endif %}
-
 
     <form method="POST">
         {% csrf_token %}
 
         <div class="input-group">
             <label>Email</label>
-            <input type="email" name="email" placeholder="Enter your email" required>
+            <div class="input-wrapper">
+                <input type="email" name="email" required>
+                <span class="icon">📧</span>
+            </div>
         </div>
 
         <div class="input-group">
             <label>Password</label>
-            <input type="password" name="password" placeholder="Enter your password" required>
+            <div class="input-wrapper">
+                <input type="password" id="password" name="password" required>
+                <span class="icon" onclick="togglePassword()">👁</span>
+            </div>
         </div>
 
         <button type="submit">Login</button>
 
-        <p class="register-link">
+        <div class="footer">
             Don’t have an account?
             <a href="{% url 'register' %}">Register</a>
-        </p>
+        </div>
+
     </form>
+
 </div>
+
+<script>
+function togglePassword() {
+    const field = document.getElementById("password");
+    field.type = field.type === "password" ? "text" : "password";
+}
+</script>
 
 </body>
 </html>

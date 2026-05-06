@@ -1,0 +1,216 @@
+{% extends "employee/base.html" %}
+
+{% block content %}
+
+<style>
+
+/* ===== Page Layout ===== */
+.payslip-page {
+    padding: 40px;
+}
+
+/* ===== Card ===== */
+.payslip-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 800px;
+    margin: auto;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+
+/* ===== Header ===== */
+.payslip-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.payslip-header h2 {
+    margin-bottom: 5px;
+}
+
+.payslip-header p {
+    color: gray;
+}
+
+/* ===== Info Section ===== */
+.payslip-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+/* ===== Table ===== */
+.payslip-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.payslip-table th {
+    background: #3f8efc;
+    color: white;
+    padding: 10px;
+    text-align: left;
+}
+
+.payslip-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* ===== Section Titles ===== */
+.section-title {
+    background: #f1f5ff;
+    font-weight: bold;
+}
+
+/* ===== Total ===== */
+.summary {
+    margin-top: 20px;
+}
+
+.summary p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.net-salary {
+    text-align: right;
+    margin-top: 15px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #28a745;
+}
+
+/* ===== Buttons ===== */
+.payslip-actions {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.btn-download {
+    background: green;
+}
+
+.btn-back {
+    background: #007bff;
+    margin-left: 10px;
+}
+
+</style>
+
+<div class="payslip-page">
+
+    <div class="payslip-card">
+
+        <!-- ===== Header ===== -->
+        <div class="payslip-header">
+            <h2>Analog Signals</h2>
+            <p>Payslip</p>
+        </div>
+
+        <!-- ===== Employee Info ===== -->
+        <div class="payslip-info">
+            <div>
+                <p><strong>Employee:</strong> {{ payroll.employee.email }}</p>
+            </div>
+            <div>
+                <p><strong>Month:</strong> {{ payroll.month }}/{{ payroll.year }}</p>
+            </div>
+        </div>
+
+        <!-- ===== Salary Table ===== -->
+        <table class="payslip-table">
+
+            <!-- Earnings -->
+            <tr class="section-title">
+                <td colspan="2">Earnings</td>
+            </tr>
+
+            <tr>
+                <td>Basic Salary</td>
+                <td>₹{{ payroll.basic_salary }}</td>
+            </tr>
+
+            <tr>
+                <td>HRA</td>
+                <td>₹{{ payroll.hra }}</td>
+            </tr>
+
+            <tr>
+                <td>Allowances</td>
+                <td>₹{{ payroll.allowances }}</td>
+            </tr>
+
+            <tr>
+                <td>Bonus</td>
+                <td>₹{{ payroll.bonus }}</td>
+            </tr>
+
+            <tr>
+                <td><strong>Gross Salary</strong></td>
+                <td><strong>₹{{ payroll.gross_salary }}</strong></td>
+            </tr>
+
+            <!-- Deductions -->
+            <tr class="section-title">
+                <td colspan="2">Deductions</td>
+            </tr>
+
+            <tr>
+                <td>Leave Deduction</td>
+                <td>₹{{ payroll.leave_deduction }}</td>
+            </tr>
+
+            <tr>
+                <td>Provident Fund (PF)</td>
+                <td>₹{{ payroll.pf }}</td>
+            </tr>
+
+            <tr>
+                <td>Tax (TDS)</td>
+                <td>₹{{ payroll.tax }}</td>
+            </tr>
+
+        </table>
+
+        <!-- ===== Summary ===== -->
+        <div class="summary">
+            <p><strong>Total Earnings:</strong> ₹{{ payroll.gross_salary }}</p>
+            <p><strong>Total Deductions:</strong> ₹{{ payroll.leave_deduction|add:payroll.pf|add:payroll.tax }}</p>
+        </div>
+
+        <!-- ===== Net Salary ===== -->
+        <div class="net-salary">
+            Net Salary: ₹{{ payroll.net_salary }}
+        </div>
+
+        <!-- ===== Buttons ===== -->
+        <div class="payslip-actions">
+
+            <a href="{% url 'download_payslip' payroll.id %}" class="btn btn-download">
+                Download PDF
+            </a>
+
+            <a href="{% url 'payroll_list' %}" class="btn btn-back">
+                Back
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

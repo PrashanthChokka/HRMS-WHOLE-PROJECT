@@ -1,0 +1,106 @@
+{% extends "employee/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'stylesheets/attendance.css' %}">
+
+<div class="attendance-page">
+
+<div class="attendance-header" >
+<h1>Leave Requests</h1>
+</div>
+
+<div class="attendance-main">
+
+<table class="leave-table">
+
+<thead>
+<tr>
+<th>Employee</th>
+<th>Leave Type</th>
+<th>Start</th>
+<th>End</th>
+<th>Days</th>
+<th>Reason</th>
+<th>Status</th>
+<th>Manager Comment</th> <!-- ✅ NEW -->
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for leave in leaves %}
+
+<tr>
+
+<td>{{ leave.employee.email }}</td>
+
+<td>{{ leave.leave_type }}</td>
+
+<td>{{ leave.start_date }}</td>
+
+<td>{{ leave.end_date }}</td>
+
+<td>{{ leave.days }}</td>
+
+<td>{{ leave.reason }}</td>
+
+<td>
+<span class="status-pending">{{ leave.status }}</span>
+</td>
+
+<!-- ✅ SHOW COMMENT -->
+<td>
+{{ leave.manager_comment|default:"-" }}
+</td>
+
+<td>
+
+{% if leave.status == "Pending" %}
+
+<div class="action-box">
+
+    <!-- Approve -->
+    <a href="{% url 'approve_leave' leave.id %}" class="btn-approve">
+        Approve
+    </a>
+
+    <!-- Reject with Comment -->
+    <form method="POST" action="{% url 'reject_leave' leave.id %}" class="reject-form">
+        {% csrf_token %}
+        
+        <input type="text" name="comment" placeholder="Reason" required>
+        
+        <button type="submit" class="btn-reject">
+            Reject
+        </button>
+    </form>
+
+</div>
+
+{% else %}
+-
+{% endif %}
+
+</td>
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="9">No pending requests</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+{% endblock %}

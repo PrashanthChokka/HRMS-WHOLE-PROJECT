@@ -1,38 +1,134 @@
 {% extends "employee/base.html" %}
 
 {% block content %}
+
 <style>
 
+/* Page Background */
+.records-page{
+padding:35px;
+background:linear-gradient(120deg,#eef2f7,#dfe9f3);
+min-height:85vh;
+}
+
+/* Header */
+.records-header{
+background:linear-gradient(90deg,#4e8bd6,#6fa8ff);
+color:white;
+padding:18px;
+border-radius:12px;
+font-size:24px;
+font-weight:600;
+text-align:center;
+box-shadow:0 6px 18px rgba(0,0,0,0.2);
+margin-bottom:25px;
+}
+
+/* Card */
+.records-card{
+background:white;
+padding:25px;
+border-radius:14px;
+box-shadow:0 12px 30px rgba(0,0,0,0.1);
+}
+
+/* Back Button */
+.back-btn{
+background:linear-gradient(45deg,#4e8bd6,#3a6fd8);
+color:white;
+border:none;
+padding:10px 18px;
+border-radius:8px;
+cursor:pointer;
+font-weight:500;
+transition:0.25s;
+margin-bottom:15px;
+}
+
+.back-btn:hover{
+transform:translateY(-2px);
+box-shadow:0 6px 14px rgba(0,0,0,0.2);
+}
+
+/* Table */
 table{
 width:100%;
 border-collapse:collapse;
-margin-top:20px;
+margin-top:15px;
+overflow:hidden;
+border-radius:10px;
 }
 
+/* Table Header */
 th{
-background:#3f8efc;
+background:linear-gradient(90deg,#3f8efc,#5fa8ff);
 color:white;
-padding:10px;
+padding:12px;
+font-weight:600;
 }
 
+/* Table Cells */
 td{
-padding:10px;
-border:1px solid #ddd;
+padding:12px;
+border-bottom:1px solid #eee;
 text-align:center;
 }
 
-tr:nth-child(even){
-background:#f5f5f5;
+/* Row Hover */
+tr:hover{
+background:#f1f6ff;
+}
+
+/* Status Badges */
+.status{
+padding:4px 10px;
+border-radius:20px;
+font-size:13px;
+font-weight:600;
+}
+
+.present{
+background:#e6f7ec;
+color:#27ae60;
+}
+
+.halfday{
+background:#fff4e5;
+color:#e67e22;
+}
+
+.absent{
+background:#fdecea;
+color:#e74c3c;
+}
+
+.empty-msg{
+padding:20px;
+color:#777;
+font-weight:500;
 }
 
 </style>
 
-<h2>Attendance Records for {{ request.user.first_name }}</h2>
+
+
+<div class="records-page">
+
+<div class="records-header">
+Attendance Records for {{ request.user.first_name }}
+</div>
+
+
+<div class="records-card">
+
 <a href="{% url 'attendance' %}">
-<button style="margin-bottom:15px;">Back to Attendance</button>
+<button class="back-btn">
+<i class="fa fa-arrow-left"></i> Back to Attendance
+</button>
 </a>
 
-<table border="1" style="width:100%;text-align:center;margin-top:20px;">
+
+<table>
 
 <tr>
 <th>Date</th>
@@ -42,37 +138,62 @@ background:#f5f5f5;
 <th>Working Hours</th>
 </tr>
 
+
 {% for record in records %}
 
 <tr>
+
 <td>{{ record.date|date:"M d, Y" }}</td>
-<td>{{ record.punch_in|time:"h:i A" }}</td>
-<td>{{ record.punch_out|time:"h:i A" }}</td>
+
+<td>
+{% if record.punch_in %}
+{{ record.punch_in|time:"h:i A" }}
+{% else %}
+-
+{% endif %}
+</td>
+
+<td>
+{% if record.punch_out %}
+{{ record.punch_out|time:"h:i A" }}
+{% else %}
+-
+{% endif %}
+</td>
+
 <td>
 
 {% if record.status == "Present" %}
-<span style="color:green;font-weight:bold;">Present</span>
+<span class="status present">Present</span>
 
 {% elif record.status == "Half Day" %}
-<span style="color:orange;font-weight:bold;">Half Day</span>
+<span class="status halfday">Half Day</span>
 
 {% else %}
-<span style="color:red;font-weight:bold;">Absent</span>
+<span class="status absent">Absent</span>
 
 {% endif %}
 
 </td>
+
 <td>{{ record.formatted_hours }}</td>
+
 </tr>
 
 {% empty %}
 
 <tr>
-<td colspan="5">No attendance records found</td>
+<td colspan="5" class="empty-msg">
+No attendance records found
+</td>
 </tr>
 
 {% endfor %}
 
 </table>
+
+</div>
+
+</div>
 
 {% endblock %}

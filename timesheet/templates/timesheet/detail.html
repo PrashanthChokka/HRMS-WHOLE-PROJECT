@@ -1,0 +1,128 @@
+{% extends 'employee/base.html' %}
+
+{% block content %}
+
+<div style="max-width:1000px; margin:auto; padding:10px;">
+
+    <!-- HEADER -->
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+
+        <div>
+            <h1 style="font-size:32px; font-weight:700; color:#0f172a; margin:0;">
+                {{ timesheet.employee_name|title }}
+            </h1>
+            <p style="color:#64748b; margin-top:6px; font-size:15px;">
+                {{ timesheet.project }} • {{ timesheet.date }}
+            </p>
+        </div>
+
+        <a href="{% url 'timesheet_list' %}" 
+           style="background:#0f172a; color:white; padding:10px 18px; border-radius:12px; text-decoration:none; font-weight:500; box-shadow:0 4px 14px rgba(0,0,0,0.15);">
+            ← Back
+        </a>
+    </div>
+
+    <!-- STATS -->
+    <div style="display:flex; gap:15px; margin-bottom:25px;">
+
+        <div style="flex:1; padding:18px; border-radius:16px; background:linear-gradient(135deg,#f1f5f9,#e2e8f0);">
+            <p style="color:#64748b; font-size:13px;">Total Tasks</p>
+            <h2 style="margin:0; font-size:22px;">{{ work_logs|length }}</h2>
+        </div>
+
+        <div style="flex:1; padding:18px; border-radius:16px; background:linear-gradient(135deg,#dcfce7,#bbf7d0);">
+            <p style="color:#166534; font-size:13px;">Completed</p>
+            <h2 style="margin:0; font-size:22px;">
+                {% for log in work_logs %}
+                    {% if log.status == "COMPLETED" %}1{% endif %}
+                {% endfor %}
+            </h2>
+        </div>
+
+    </div>
+
+    <!-- WORK LOGS -->
+    <div style="display:flex; flex-direction:column; gap:18px;">
+
+        {% for log in work_logs %}
+        <div style="
+            background:rgba(255,255,255,0.7);
+            backdrop-filter: blur(10px);
+            padding:20px;
+            border-radius:16px;
+            box-shadow:0 10px 25px rgba(0,0,0,0.05);
+            transition:0.25s;
+        "
+        onmouseover="this.style.transform='translateY(-4px)'"
+        onmouseout="this.style.transform='translateY(0)'">
+
+            <!-- TOP -->
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+
+                <h3 style="margin:0; font-size:17px; font-weight:600;">
+                    {{ log.task }}
+                </h3>
+
+                <span style="
+                    padding:5px 14px;
+                    border-radius:20px;
+                    font-size:12px;
+                    font-weight:600;
+
+                    {% if log.status == 'COMPLETED' %}
+                        background:#dcfce7; color:#166534;
+                    {% elif log.status == 'IN_PROGRESS' %}
+                        background:#fef3c7; color:#92400e;
+                    {% else %}
+                        background:#fee2e2; color:#991b1b;
+                    {% endif %}
+                ">
+                    {{ log.status }}
+                </span>
+
+            </div>
+
+            <!-- TIME -->
+            <div style="font-size:14px; color:#475569; margin-bottom:8px;">
+                ⏱ {{ log.start_time }} → {{ log.end_time }}
+            </div>
+
+            <!-- DESCRIPTION -->
+            <div style="font-size:14px; color:#334155;">
+                {{ log.description }}
+            </div>
+
+            <!-- REMARKS -->
+            {% if log.remarks %}
+            <div style="margin-top:8px; font-size:13px; color:#64748b;">
+                💬 {{ log.remarks }}
+            </div>
+            {% endif %}
+
+        </div>
+        {% empty %}
+        <div style="text-align:center; padding:40px; color:#64748b;">
+            No work logs available
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <!-- NOTES -->
+    <div style="
+        margin-top:30px;
+        padding:22px;
+        border-radius:16px;
+        background:linear-gradient(135deg,#f8fafc,#e2e8f0);
+    ">
+
+        <h3 style="margin-bottom:10px;">📝 Notes</h3>
+
+        <p><strong>Blockers:</strong> {{ notes.blockers|default:"-" }}</p>
+        <p><strong>Pending:</strong> {{ notes.pending_work|default:"-" }}</p>
+
+    </div>
+
+</div>
+
+{% endblock %}

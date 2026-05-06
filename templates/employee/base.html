@@ -1,173 +1,242 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-<head>
-<title>DASHBOARD</title>
-
-<link rel="stylesheet" href="{% static 'stylesheets/employee.css' %}">
-<link rel="stylesheet" href="{% static 'stylesheets/attendance.css' %}">
-<link rel="stylesheet" href="{% static 'stylesheets/employee_list.css' %}">
-<link rel="stylesheet" href="{% static 'stylesheets/add_edit_employee.css' %}">
-<link rel="stylesheet" href="{% static 'stylesheets/employee_profile.css' %}">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"/>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Segoe UI, sans-serif;
-}
-
-/* HEADER */
-.header{
-height:60px;
-background:#2c3e50;
-display:flex;
-align-items:center;
-justify-content:center;
-color:white;
-font-size: 24px;
-}
-
-/* SIDEBAR */
-.sidebar{
-width:220px;
-background:#f4f4f4;
-position:fixed;
-top:60px;
-height:100vh;
-padding:20px;
-box-shadow:3px 0 12px rgba(0,0,0,0.08);
-}
-
-.sidebar h2{
-text-align:center;
-margin-bottom:25px;
-}
-
-.sidebar a{
-display:block;
-padding:14px;
-margin-bottom:10px;
-color:#333;
-text-decoration:none;
-border-radius:8px;
-transition:0.3s;
-}
-
-.sidebar a:hover{
-background:#3f8efc;
-color:white;
-}
-
-.sidebar a i{
-margin-right:10px;
-}
-
-/* MAIN */
-.main{
-margin-left:220px;
-min-height:calc(100vh - 60px);
-padding:20px;
-}
-
-.emp-dropdown{
-max-height:0;
-overflow:hidden;
-padding-left:15px;
-transition:max-height .35s ease;
-}
-
-.emp-dropdown.open{
-max-height:300px;
-}
-
-.emp-dropdown a{
-background:#e9e9e9;
-font-size:14px;
-margin-bottom:6px;
-padding:10px;
-border-radius:6px;
-}
-
-.rotate{
-transition:0.3s;
-}
-
-.rotate.open{
-transform:rotate(180deg);
-}
-
-</style>
-</head>
-
-<body>
-
-<div class="header">
-<h2>SILICON ACCESS</h2>
-</div>
-
-<div class="sidebar">
-
-<h2>HRMS</h2>
-
-<a href="{% url 'base' %}">
-<i class="fas fa-home"></i>Dashboard
+  <head>
+    <title>DASHBOARD</title>
+ 
+    <link rel="stylesheet" href="{% static 'stylesheets/employee.css' %}" />
+    <link rel="stylesheet" href="{% static 'stylesheets/attendance.css' %}" />
+    <link
+      rel="stylesheet"
+      href="{% static 'stylesheets/employee_list.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'stylesheets/add_edit_employee.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'stylesheets/employee_profile.css' %}"
+    />
+ 
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    />
+ 
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", sans-serif;
+      }
+ 
+      body {
+        background: #f4f6fb;
+      }
+ 
+      /* HEADER (FIXED) */
+      .header {
+        position: fixed; /* ✅ added */
+        top: 0; /* ✅ added */
+        left: 0; /* ✅ added */
+        width: 100%; /* ✅ added */
+        z-index: 1000; /* ✅ added */
+ 
+        height: 60px;
+        background: #1e3a8a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      }
+ 
+      /* SIDEBAR (ALREADY FIXED) */
+      .sidebar {
+        width: 220px;
+        background: #1e3a8a;
+        position: fixed;
+        top: 60px;
+        height: calc(100vh - 60px);
+        overflow-y: auto;
+        padding: 20px 10px;
+        color: white;
+      }
+ 
+      /* hide HRMS text */
+      .sidebar h2 {
+        display: none;
+      }
+ 
+      /* sidebar links */
+      .sidebar a {
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        margin-bottom: 8px;
+        color: #e5e7eb;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+ 
+      .sidebar a i {
+        margin-right: 10px;
+        font-size: 14px;
+      }
+ 
+      /* hover */
+      .sidebar a:hover {
+        background: #3b82f6;
+        color: white;
+        transform: translateX(4px);
+      }
+ 
+      /* MAIN (SCROLL AREA) */
+      .main {
+        margin-left: 220px;
+        margin-top: 60px; /* ✅ important fix */
+        min-height: calc(100vh - 60px);
+        padding: 30px;
+        background: #f4f6fb;
+      }
+ 
+      /* DROPDOWN */
+      .emp-dropdown {
+        max-height: 0;
+        overflow: hidden;
+        padding-left: 10px;
+        transition: max-height 0.3s ease;
+      }
+ 
+      .emp-dropdown.open {
+        max-height: 200px;
+      }
+ 
+      .emp-dropdown a {
+        background: #1e40af;
+        font-size: 13px;
+        margin-bottom: 5px;
+        padding: 8px 12px;
+        border-radius: 5px;
+      }
+ 
+      .emp-dropdown a:hover {
+        background: #3b82f6;
+      }
+ 
+      /* arrow */
+      .rotate {
+        transition: 0.3s;
+      }
+ 
+      .rotate.open {
+        transform: rotate(180deg);
+      }
+    </style>
+  </head>
+ 
+  <body>
+    <div class="header">
+      <h2>HRMS</h2>
+    </div>
+ 
+    <div class="sidebar">
+      <h2>HRMS</h2>
+ 
+      <a href="{% url 'base' %}"> <i class="fas fa-home"></i>Dashboard </a>
+ 
+      <a href="/e/employee/" id="empToggle">
+        <i class="fas fa-user"></i>Employees
+        <i
+          class="fas fa-chevron-down rotate"
+          id="arrowIcon"
+          style="float: right"
+        ></i>
+      </a>
+ 
+      <div class="emp-dropdown" id="empDropdown">
+        <a href="{% url 'employee_list' %}">Employee info</a>
+        <a href="/e/add_edit_employee/">Add/Edit Employee</a>
+      </div>
+ 
+      <a href="{% url 'attendance' %}">
+        <i class="fas fa-calendar-check"></i>Attendance
+      </a>
+ 
+      <a href="/c/calendar/">
+        <i class="fas fa-calendar"></i> Calendar
+      </a>
+ 
+<a href="#" id="leaveToggle">
+    <i class="fas fa-leaf"></i>Leave
+    <i class="fas fa-chevron-down rotate" id="leaveArrow"></i>
 </a>
 
-<a href="/e/employee/" id="empToggle">
-<i class="fas fa-user"></i>Employees
-<i class="fas fa-chevron-down rotate" id="arrowIcon" style="float:right;"></i>
-</a>
-
-<div class="emp-dropdown" id="empDropdown">
-<a href="{% url 'employee_list' %}">Employee info</a>
-<a href="/e/add_edit_employee/">Add/Edit Employee</a>
+<div class="emp-dropdown" id="leaveDropdown">
+    <a href="{% url 'apply_leave' %}">
+        <i class="fas fa-calendar-plus"></i> Apply Leave
+    </a>
+    <a href="{% url 'leave_history' %}">
+        <i class="fas fa-list"></i> My Leaves
+    </a>
+    <a href="{% url 'leave_requests' %}">
+        <i class="fas fa-user-check"></i> Leave Requests
+    </a>
 </div>
-
-<a href="{% url 'attendance' %}">
-<i class="fas fa-calendar-check"></i>Attendance
+ 
+<a href="{% url 'payroll_list' %}">   
+<i class="fas fa-wallet"></i> Payroll
 </a>
-
-<a href="#"><i class="fas fa-calendar-minus"></i> Leaves</a>
-<a href="#"><i class="fas fa-wallet"></i> Payroll</a>
-<a href="#"><i class="fas fa-chart-bar"></i> Reports</a>
-<a href="#"><i class="fas fa-sliders-h"></i> Settings</a>
-
-<a href="{% url 'logout' %}">
-<i class="fas fa-sign-out-alt"></i>Logout
+<a href="{% url 'timesheet_list' %}">
+    <i class="fas fa-clock"></i> Timesheet
 </a>
-
-</div>
-
-<div class="main">
-
-{% block content %}
-
-<h2>Dashboard</h2>
-<p>Main content goes here</p>
-
-{% endblock %}
-
-</div>
-
-<script>
-
-const empToggle = document.getElementById("empToggle");
-const empDropdown = document.getElementById("empDropdown");
-const arrowIcon = document.getElementById("arrowIcon");
-
-empToggle.addEventListener("click", function(e){
-  e.preventDefault();
-  empDropdown.classList.toggle("open");
-  arrowIcon.classList.toggle("open");
-});
-
-</script>
-
-</body>
+ 
+      <a href="{% url 'logout' %}">
+        <i class="fas fa-sign-out-alt"></i>Logout
+      </a>
+    </div>
+ 
+    <div class="main">
+      {% block content %}
+      <h2>Dashboard</h2>
+      <p>Main content goes here</p>
+      {% endblock %}
+    </div>
+ 
+    <script>
+      const empToggle = document.getElementById("empToggle");
+      const empDropdown = document.getElementById("empDropdown");
+      const arrowIcon = document.getElementById("arrowIcon");
+ 
+      const leaveToggle = document.getElementById("leaveToggle");
+      const leaveDropdown = document.getElementById("leaveDropdown");
+      const leaveArrow = document.getElementById("leaveArrow");
+ 
+      if (empToggle) {
+        empToggle.addEventListener("click", function (e) {
+          e.preventDefault();
+          empDropdown.classList.toggle("open");
+          arrowIcon.classList.toggle("open");
+        });
+      }
+ 
+      if (leaveToggle) {
+        leaveToggle.addEventListener("click", function (e) {
+          e.preventDefault();
+          leaveDropdown.classList.toggle("open");
+          leaveArrow.classList.toggle("open");
+        });
+      }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  </body>
 </html>
+ 
+ 

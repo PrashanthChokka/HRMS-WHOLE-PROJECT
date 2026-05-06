@@ -1,0 +1,208 @@
+{% extends 'employee/base.html' %}
+{% block content %}
+
+<style>
+/* PAGE */
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 24px;
+}
+
+/* HEADER */
+.ts-header h1 {
+    margin: 0;
+    font-size: 28px;
+    color: #0284c7;
+}
+.ts-header p {
+    margin-top: 4px;
+    color: #64748b;
+}
+
+/* USER BOX */
+.user-box {
+    background: #e0f2fe;
+    padding: 12px;
+    border-radius: 10px;
+    margin: 18px 0;
+    color: #0369a1;
+    font-weight: 600;
+}
+
+/* INPUTS */
+.input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: #f9fbff;
+}
+.input.small {
+    max-width: 120px;
+}
+
+/* ROW CARD */
+.card {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background: #fff;
+    padding: 14px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* ACTION BUTTONS */
+.actions {
+    display: flex;
+    gap: 6px;
+}
+
+.btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* COLORS */
+.btn-add { background: #22c55e; }
+.btn-save-row { background: #0284c7; }
+.btn-delete { background: #ef4444; }
+
+.btn-add:hover { background: #16a34a; }
+.btn-save-row:hover { background: #0369a1; }
+.btn-delete:hover { background: #dc2626; }
+
+/* MAIN SAVE */
+.btn-main {
+    background: #0284c7;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+.btn-main:hover {
+    background: #0369a1;
+}
+</style>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="ts-header">
+        <h1>Create Timesheet</h1>
+        <p>Fill your daily work details</p>
+    </div>
+
+    <!-- USER -->
+    <div class="user-box">
+        👤 Employee: {{ request.user.first_name|upper }} {{ request.user.last_name|upper }}
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- TOP -->
+        <div style="display:flex; gap:12px; margin-bottom:20px;">
+            <input type="date" name="date" class="input" required>
+            <input type="text" name="project" class="input" placeholder="Project" required>
+        </div>
+
+        <!-- WORK LOG -->
+        <h3>Work Log</h3>
+
+        <div id="taskBody" style="display:flex; flex-direction:column; gap:12px; margin-top:10px;">
+
+            <!-- ROW -->
+            <div class="card">
+
+                <input type="time" name="start_time[]" class="input small" required>
+                <input type="time" name="end_time[]" class="input small" required>
+
+                <select name="task[]" class="input">
+                    <option>Select Task</option>
+                    <option>Development</option>
+                    <option>Testing</option>
+                    <option>Debugging</option>
+                    <option>Standup Call</option>
+                </select>
+
+                <input type="text" name="description[]" class="input" placeholder="Description">
+
+                <select name="status[]" class="input small">
+                    <option value="COMPLETED">Completed</option>
+                    <option value="IN_PROGRESS">In Progress</option>
+                    <option value="PENDING">Pending</option>
+                </select>
+
+                <input type="text" name="remarks[]" class="input" placeholder="Remarks">
+
+                <!-- ACTION BUTTONS -->
+                <div class="actions">
+                    <button type="button" class="btn btn-save-row" onclick="saveRow(this)">💾</button>
+                    <button type="button" class="btn btn-add" onclick="addRow()">+</button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- NOTES -->
+        <div style="margin-top:20px;">
+            <textarea name="blockers" class="input" style="width:100%; margin-bottom:10px;" placeholder="Blockers"></textarea>
+            <textarea name="pending_work" class="input" style="width:100%;" placeholder="Pending Work"></textarea>
+        </div>
+
+        <!-- SAVE -->
+        <div style="margin-top:20px; text-align:right;">
+            <button type="submit" class="btn-main">
+                Save Timesheet
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+function addRow() {
+    let container = document.getElementById("taskBody");
+    let newRow = container.children[0].cloneNode(true);
+
+    newRow.querySelectorAll("input").forEach(i => i.value = "");
+    newRow.querySelector("select").selectedIndex = 0;
+
+    let addBtn = newRow.querySelector(".btn-add");
+
+    addBtn.innerHTML = "✕";
+    addBtn.className = "btn btn-delete";
+
+    addBtn.onclick = function () {
+        this.closest(".card").remove();
+    };
+
+    container.appendChild(newRow);
+}
+
+function saveRow(btn) {
+    let row = btn.closest(".card");
+    row.style.boxShadow = "0 0 0 2px #22c55e";
+
+    setTimeout(() => {
+        row.style.boxShadow = "";
+    }, 600);
+}
+</script>
+
+{% endblock %}

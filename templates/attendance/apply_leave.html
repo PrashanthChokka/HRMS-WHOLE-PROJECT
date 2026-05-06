@@ -1,0 +1,138 @@
+{% extends "employee/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'stylesheets/attendance.css' %}">
+
+<div class="attendance-page" style=" background: linear-gradient(135deg, #e6dff5, #cdb4db);">
+
+    <div class="attendance-header" style="   background: linear-gradient(135deg, #7b6fc2, #b8a1e3);">
+        <h1>Apply Leave</h1>
+    </div>
+
+    <div class="attendance-main">
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Row 1 -->
+            <div class="leave-row">
+
+                <div class="leave-field">
+                    <label>Leave Type</label>
+                    <select name="leave_type" required>
+                        <option value="">Select Leave</option>
+                        <option value="CL">Casual Leave (CL)</option>
+                        <option value="SL">Sick Leave (SL)</option>
+                        <option value="EL">Earned Leave (EL)</option>
+                        <option value="LOP">Loss of Pay (LOP)</option>
+                        <option value="Optional">Optional Holiday</option>
+                    </select>
+                </div>
+
+                <div class="leave-field">
+                    <label>Start Date</label>
+                    <input type="date" id="startDate" name="start_date" required>
+                </div>
+
+                <div class="leave-field">
+                    <label>End Date</label>
+                    <input type="date" id="endDate" name="end_date" required>
+                </div>
+
+            </div>
+
+            <!-- Leave Info -->
+            <div class="leave-info">
+
+                <div class="info-box">
+                    <p>Total Days</p>
+                    <h3 id="leaveDays">0</h3>
+                </div>
+
+                <div class="info-box">
+                    <p>Leave Balance</p>
+                    <h3>{{ leave_balance }}</h3>
+                </div>
+
+            </div>
+
+            <!-- Reason -->
+            <div class="leave-row">
+                <div class="leave-field reason-field">
+                    <label>Reason</label>
+                    <textarea name="reason" rows="4" required></textarea>
+                </div>
+            </div>
+
+            <!-- Medical Document -->
+            <div class="leave-row" id="medicalField" style="display:none;">
+                <div class="leave-field">
+                    <label>Medical Document</label>
+                    <input type="file" name="medical_document" id="medicalDoc">
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="leave-submit">
+                <button type="submit" class="btn-primary">Apply Leave</button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- SCRIPT -->
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+    const startDate = document.getElementById("startDate");
+    const endDate = document.getElementById("endDate");
+    const leaveDays = document.getElementById("leaveDays");
+
+    const leaveType = document.querySelector("select[name='leave_type']");
+    const medicalField = document.getElementById("medicalField");
+    const medicalDoc = document.getElementById("medicalDoc");
+
+    function calculateDays() {
+
+        if (startDate.value && endDate.value) {
+
+            const start = new Date(startDate.value);
+            const end = new Date(endDate.value);
+
+            if (end < start) {
+                leaveDays.innerText = 0;
+                return;
+            }
+
+            const diff = end - start;
+            const days = (diff / (1000 * 60 * 60 * 24)) + 1;
+
+            leaveDays.innerText = days;
+        }
+    }
+
+    startDate.addEventListener("change", calculateDays);
+    endDate.addEventListener("change", calculateDays);
+
+    // Medical doc logic
+    leaveType.addEventListener("change", function(){
+
+        if (this.value === "SL") {
+            medicalField.style.display = "block";
+            medicalDoc.required = true;
+        } else {
+            medicalField.style.display = "none";
+            medicalDoc.required = false;
+        }
+
+    });
+
+});
+</script>
+
+{% endblock %}

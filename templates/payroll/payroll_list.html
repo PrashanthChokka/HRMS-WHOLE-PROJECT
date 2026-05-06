@@ -1,0 +1,64 @@
+{% extends "employee/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'stylesheets/attendance.css' %}">
+
+<div class="attendance-page">
+
+    <!-- HEADER -->
+    <div class="attendance-header">
+        <h1>Payroll</h1>
+    </div>
+
+    <!-- MAIN CARD -->
+    <div class="attendance-main">
+
+        <table class="payroll-table">
+
+            <thead>
+                <tr>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            {% for p in payrolls %}
+
+                <tr>
+                    <td class="action-cell">
+
+                        <!-- VIEW BUTTON -->
+                        <a href="{% url 'view_payslip' p.id %}" class="btn view-btn">
+                            <i class="fas fa-file-alt"></i>  View Payslip
+                        </a>
+
+                        <!-- DOWNLOAD BUTTON -->
+                        <a href="{% url 'download_payslip' p.id %}" class="btn download-btn">
+                            ⬇ Download
+                        </a>
+
+                    </td>
+                </tr>
+
+            {% empty %}
+
+                <tr>
+                    <td style="text-align:center; padding:20px;">
+                        No payroll records found
+                    </td>
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}
