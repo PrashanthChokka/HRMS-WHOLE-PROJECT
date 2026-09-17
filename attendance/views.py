@@ -186,7 +186,7 @@ def leave_history(request):
         "leaves": leaves
     })
 
-
+  
 # ---------------- Manager Leave Requests ----------------
 @login_required
 def leave_requests(request):
